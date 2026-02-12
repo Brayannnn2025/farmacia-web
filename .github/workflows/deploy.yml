@@ -29,3 +29,19 @@ jobs:
             --delete \
             --exclude ".git/*" \
             --exclude ".github/*"
+
+      # Evita cache fuerte del HTML
+      - name: Set no-cache headers for index.html
+        run: |
+          aws s3 cp index.html s3://farmacia.brayanweb.org/index.html \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --content-type "text/html; charset=utf-8" \
+            --metadata-directive REPLACE
+
+      # 🔥 Invalida CloudFront automáticamente
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E34OU8KLMCLMXV \
+            --paths "/*"
+

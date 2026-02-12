@@ -28,9 +28,12 @@ jobs:
           aws s3 sync . s3://farmacia.brayanweb.org \
             --delete \
             --exclude ".git/*" \
-            --exclude ".github/*"
+            --exclude ".github/*" \
+            --exclude "*.yml" \
+            --exclude "*.yaml" \
+            --exclude "*.md"
 
-      # Evita cache fuerte del HTML
+      # Evita cache fuerte del HTML (para que los cambios se vean inmediato)
       - name: Set no-cache headers for index.html
         run: |
           aws s3 cp index.html s3://farmacia.brayanweb.org/index.html \
